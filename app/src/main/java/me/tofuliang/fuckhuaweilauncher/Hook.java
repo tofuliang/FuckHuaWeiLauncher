@@ -24,5 +24,16 @@ public class Hook implements IXposedHookLoadPackage {
                     param.setResult(0);
             }
         });
+
+        XposedBridge.hookAllMethods(loadPackageParam.classLoader.loadClass("android.app.ApplicationPackageManager"), "getApplicationEnabledSetting", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
+                Log.d(TAG + pn, "ApplicationPackageManager getApplicationEnabledSetting params : " + Arrays.toString(param.args));
+                if (param.args[0] == "com.huawei.android.launcher")
+                    param.setResult(1);
+            }
+        });
+
+
     }
 }
